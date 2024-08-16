@@ -6,7 +6,7 @@ This mod is compatible with the HUD Bars [`hudbars`] mod.
 This mod *disables* itself if Unified Inventory is detected to show item names.
 Compatibility with other HUD-related mods is possible, but not guaranteed.
 
-Version: 1.2.0
+Version: 1.2.1
 
 ## A note for Unified Inventory users
 
