@@ -11,6 +11,7 @@ local unified_inventory_mod = minetest.get_modpath("unified_inventory")
 
 -- Disable mod if Unified Inventory item names feature is enabled
 if unified_inventory_mod and minetest.settings:get_bool("unified_inventory_item_names") ~= false then
+	minetest.log("action", "[show_wielded_item] Unified Inventory's item names feature was detected! Running show_wielded_item is pointless now, so it won't do anything")
 	return
 end
 
