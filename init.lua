@@ -7,6 +7,12 @@ local dtimes = {}
 local dlimit = 3  -- HUD element will be hidden after this many seconds
 
 local hudbars_mod = minetest.get_modpath("hudbars")
+local unified_inventory_mod = minetest.get_modpath("unified_inventory")
+
+-- Disable mod if Unified Inventory item names feature is enabled
+if unified_inventory_mod and minetest.settings:get_bool("unified_inventory_item_names") ~= false then
+	return
+end
 
 local function set_hud(player)
 	if not player:is_player() then return end
