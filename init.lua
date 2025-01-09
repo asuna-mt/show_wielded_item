@@ -12,6 +12,23 @@ local dtimes = {}
 local dlimit = 3  -- HUD element will be hidden after this many seconds
 
 local hudbars_mod = minetest.get_modpath("hudbars")
+local unified_inventory_mod = minetest.get_modpath("unified_inventory")
+
+-- Legacy support: Name of the HUD type field for 'hud_add'.
+local hud_type_field_name
+if minetest.features.hud_def_type_field then
+	-- engine version 5.9.0 and later
+	hud_type_field_name = "type"
+else
+	-- All engine versions before 5.9.0
+	hud_type_field_name = "hud_elem_type"
+end
+
+-- Disable mod if Unified Inventory item names feature is enabled
+if unified_inventory_mod and minetest.settings:get_bool("unified_inventory_item_names") ~= false then
+	minetest.log("action", "[show_wielded_item] Unified Inventory's item names feature was detected! Running show_wielded_item is pointless now, so it won't do anything")
+	return
+end
 
 local function set_hud(player)
 	if not player:is_player() then return end
@@ -34,14 +51,14 @@ local function set_hud(player)
 			off.y = -76 - vmargin*rows
 		end
 
-		-- Dirty trick to avoid collision with Minetest's status text (e.g. “Volume changed to 0%”)
+		-- Dirty trick to avoid collision with Luanti's status text (e.g. “Volume changed to 0%”)
 		if off.y >= -167 and off.y <= -156 then
 			off.y = -181
 		end
 	end
 
 	huds[player_name] = player:hud_add({
-		hud_elem_type = "text",
+		[hud_type_field_name] = "text",
 		position = {x=0.5, y=1},
 		offset = off,
 		alignment = {x=0, y=0},
@@ -97,7 +114,7 @@ if not show_already_implemented() then
 
 				if huds[player_name] then 
 
-					-- Get description (various fallback checks for old Minetest versions)
+					-- Get description (various fallback checks for old Luanti/Minetest versions)
 					local def = minetest.registered_items[wname]
 					local desc
 					if wstack.get_short_description then
